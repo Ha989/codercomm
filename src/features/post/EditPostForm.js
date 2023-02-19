@@ -16,11 +16,10 @@ const yupSchema = Yup.object().shape({
   
 
 
-function EditPostForm({ postId, handleCloseEdit, handleMenuClose }) {
+function EditPostForm({ postId }) {
     
     const dispatch = useDispatch();
     const {isLoading} = useSelector((state) => state.post);
-
     const defaultValues = {
       content: "",
       image: "",
@@ -39,8 +38,6 @@ function EditPostForm({ postId, handleCloseEdit, handleMenuClose }) {
   
       const onSubmit = (data) => {
         dispatch(editPost({ postId: postId, ...data })).then(() => reset());
-        handleCloseEdit();
-        handleMenuClose();
       };
 
       const handleDrop = useCallback(
@@ -95,14 +92,10 @@ function EditPostForm({ postId, handleCloseEdit, handleMenuClose }) {
               type="submit"
               variant="outlined"
               size="small"
-
               loading={isSubmitting || isLoading}
             >
               Save Changes
             </LoadingButton>
-            <Button variant="outlined" size="small" onClick={handleCloseEdit}>
-              Cancel
-            </Button>
           </Box>
         </Stack>
         </FormProvider>

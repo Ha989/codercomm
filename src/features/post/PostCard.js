@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Link,
@@ -7,31 +7,32 @@ import {
   Avatar,
   Typography,
   CardHeader,
-  IconButton,
+
 } from "@mui/material";
-import  { Link as RouterLink } from 'react-router-dom';
-import {fDate} from '../../utils/formatTime';
-import PostReaction from './PostReaction';
-import CommentList from '../comment/CommentList';
-import CommentForm from '../comment/CommentForm';
-import EditPost from './EditPost';
-import { useDispatch } from 'react-redux';
-import { deletePost } from './postSlice';
+import { Link as RouterLink } from "react-router-dom";
+import { fDate } from "../../utils/formatTime";
+
+
+import PostReaction from "./PostReaction";
+import CommentForm from "../comment/CommentForm";
+import CommentList from "../comment/CommentList";
+import EditPost from "./EditPost";
+import { useDispatch } from "react-redux";
+import { deletePost } from "./postSlice";
 
 function PostCard({ post }) {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(deletePost(post._id));
-  }
+    dispatch(deletePost( post._id ));
+  };
 
- 
   return (
     <Card>
-      <CardHeader 
+      <CardHeader
         disableTypography
         avatar={
-          <Avatar src={post?.author?.avatarUrl} alt={post?.author?.name}/>
+          <Avatar src={post?.author?.avatarUrl} alt={post?.author?.name} />
         }
         title={
           <Link
@@ -40,9 +41,9 @@ function PostCard({ post }) {
             component={RouterLink}
             sx={{ fontWeight: 600 }}
             to={`/user/${post.author._id}`}
-            >
-              {post?.author?.name}
-            </Link>
+          >
+            {post?.author?.name}
+          </Link>
         }
         subheader={
           <Typography
@@ -53,14 +54,11 @@ function PostCard({ post }) {
           </Typography>
         }
         action={
-          <IconButton
-          >
-           <EditPost handleDelete={handleDelete} postId={post._id}/>
-          </IconButton>
+          <EditPost handleDelete={handleDelete} postId={post._id} />
         }
-        />
+      />
 
-<Stack spacing={2} sx={{ p: 3 }}>
+      <Stack spacing={2} sx={{ p: 3 }}>
         <Typography>{post.content}</Typography>
 
         {post.image && (
@@ -81,7 +79,7 @@ function PostCard({ post }) {
         <CommentForm postId={post._id} />
       </Stack>
     </Card>
-  )
+  );
 }
 
-export default PostCard
+export default PostCard;

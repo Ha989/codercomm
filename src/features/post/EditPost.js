@@ -1,127 +1,93 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import { Divider, Modal, Stack } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DeleteConfirm from "../../components/DeleteConfirm";
+import { Button,IconButton, Typography, Box, Modal, Stack} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import EditPostForm from "./EditPostForm";
 
-const style = {
-    alignItems:"center",
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 300,
-    bgcolor: "#FFFF",
-    borderRadius: 1,
-    p: 3,
-  };
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 300,
+  bgcolor: 'background.paper',
+  borderRadius: 1,
+  p: 2,
+};
 
 function EditPost({ postId, handleDelete }) {
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const isMenuOpen = Boolean(anchorEl);
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const [editOpen, setEditOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-
-  const handleCloseEdit = () => {
-      setEditOpen(false);
-  };
-  const handleOpenEdit = () => {
-      setEditOpen(true);
-  };
+  const [openEdit, setOpenEdit] = useState(false);
   const handleDeleteOpen = () => {
     setOpenDelete(true);
   };
-  const handleCloseDelete = () => {
-    setOpenDelete(false)
-  }
+
+  const handleDeleteClose = () => {
+    setOpenDelete(false);
+  };
  
-  
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    > 
-      
-      <MenuItem sx={{ mx: 1 }}>
-        <Box
-          variant="contained"
-          style={{ flexGrow: 1, display: "flex", justifyContent: "center" }}
-          onClick={handleOpenEdit}
-        >
-          Edit post
-        </Box>
-        <Modal
-          open={editOpen}
-          onClose={handleCloseEdit}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <Stack spacing={2} >
-              <EditPostForm
-                handleCloseEdit={handleCloseEdit}
-                postId={postId}
-                handleMenuClose={handleMenuClose}
-              />
-            </Stack>
-          </Box>
-        </Modal>
-      </MenuItem>
-      <Divider sx={{ borderStyle: "dashed" }} />
-      <MenuItem sx={{ mx: 1 }}>
-        <Box
-          variant="contained"
-          style={{ flexGrow: 1, display: "flex", justifyContent: "center" }}
-          onClick={handleDeleteOpen}
-        >
-          Delete post
-        </Box>
-        <Modal
-          open={openDelete}
-          onClose={handleCloseDelete}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-        <DeleteConfirm props={{ handleCloseDelete, handleDelete }}/>
-        </Modal>
-      </MenuItem>
-      
-    </Menu>
-  );
+  const handleEditClose = () => {
+    setOpenEdit(false);
+  };
+
+  const handleEditOpen = () => {
+    setOpenEdit(true);
+  };
 
   return (
-    <Box>
-      <IconButton onClick={handleProfileMenuOpen}>
-        <MoreVertIcon />
+    <>
+    <Box display="flex" flexDirection="row" >
+      <IconButton onClick={handleEditOpen}>
+        <EditIcon fontSize="small"/>
       </IconButton>
-      {renderMenu}
-    </Box>
+      <Modal
+            width={300}
+            open={openEdit}
+            onClose={handleEditClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style} textAlign="center">
+             <EditPostForm postId={postId} />
+            </Box>
+        </Modal>
+      <IconButton onClick={handleDeleteOpen}>
+        <DeleteIcon fontSize="small"/>
+      </IconButton>
+         <Modal
+            width={300}
+            open={openDelete}
+            onClose={handleDeleteClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style} textAlign="center">
+            <Typography variant="h6">
+              Do you want to delete this post?
+            </Typography>
+                <Stack direction="row" justifyContent="space-between"> 
+                  <Button
+                    autoFocus
+                    variant="outlined"
+                    fontSize="small"
+                    onClick={handleDelete}
+                  >
+                    Yes
+                  </Button>
+                  <Button
+                    autoFocus
+                    variant="outlined"
+                    fontSize="small"
+                    onClick={handleDeleteClose}
+                  >
+                    Cancel
+                  </Button>
+                </Stack>
+             </Box>
+        </Modal>
+      </Box>
+    </>
   );
 }
 

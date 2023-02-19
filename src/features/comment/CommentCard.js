@@ -22,7 +22,7 @@ function CommentCard({ comment }) {
 
   const handleDeleteComment = () => {
     console.log("comment:", comment);
-    deleteComment(comment._id);
+    dispatch(deleteComment({ commentId: comment._id, postId: comment.post}));
   }
 
   const renderMenu = (
