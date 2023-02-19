@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { POSTS_PER_PAGE } from "../../app/config";
 import { cloudinaryUpload } from "../../utils/cloudinary";
+import { toast } from 'react-toastify';
+import { getCurrentUserProfile } from "../user/userSlice";
+
 
 const initialState = {
     isLoading: false,
@@ -50,7 +53,22 @@ const slice = createSlice({
         resetPost( state, action) {
           state.postsById = {};
           state.currentPagePosts = [];
+        },
+        deletePostSuccess(state, action) {
+          state.isLoading = false;
+          state.error = null;
+          const { postId } = action.payload;
+          delete state.postsById[postId];
+          state.currentPagePosts =  state.currentPagePosts.filter((postId) => postId !== action.payload.postId)
+        },
+        editedPostSuccess(state, action) {
+          state.isLoading = false;
+          state.error = null;
+          const editedPostId = action.payload;
+          state.postsById[editedPostId._id].content = editedPostId.content;
+          state.postsById[editedPostId._id].image = editedPostId.image;
         }
+       
     }
 });
 
@@ -103,6 +121,38 @@ export const sendPostReaction = ({ postId, emoji }) =>
 
     } catch(error) {
       dispatch(slice.actions.hasError(error.message));
+    }
+  };
+
+  export const deletePost = ( postId ) => 
+    async (dispatch) => {
+      dispatch(slice.actions.startLoading());
+      try {
+        
+        const response = await apiService.delete(`/posts/${postId}`);
+        dispatch(slice.actions.deletePostSuccess({...response.data, postId}));
+        toast.success("Deleted success");
+      } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
+      }
+    }
+
+    export const editPost = ({ content, image, postId}) => 
+    async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+        const imageUrl = await cloudinaryUpload(image);
+        const response = await apiService.put(`/posts/${postId}`, {
+            content,
+            image: imageUrl,
+        });
+        dispatch(slice.actions.editedPostSuccess(response.data))
+        toast.success("Saved change");
+        dispatch(getCurrentUserProfile);
+    } catch (error) {
+        dispatch(slice.actions.hasError(error.message));
+        toast.error(error.message);
     }
   }
 

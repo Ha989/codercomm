@@ -90,7 +90,17 @@ export const updatedUserProfile = ({
         dispatch(slice.actions.hasError(error.message));
         toast.error(error.message);
     }
-}
+};
+
+export const getCurrentUserProfile = () => async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.get("/users/me");
+      dispatch(slice.actions.updatedUserProfileSuccess(response.data));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error));
+    }
+  };
 
 export default slice.reducer;
 
