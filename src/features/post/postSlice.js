@@ -138,7 +138,7 @@ export const sendPostReaction = ({ postId, emoji }) =>
       }
     }
 
-    export const editPost = ({ content, image, postId}) => 
+    export const editPost = ({ content, image, postId }) => 
     async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {

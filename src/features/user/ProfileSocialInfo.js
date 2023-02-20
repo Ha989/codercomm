@@ -27,13 +27,13 @@ function ProfileSocialInfo({ profile }) {
       href: linkedinLink,
     },
     {
-      name: "Twitter",
-      icon: (-
-        <IconStyle color="#1877F2">
-          <TwitterIcon />
+      name: "Instagram",
+      icon: (
+        <IconStyle color="#D7336D">
+          <InstagramIcon />
         </IconStyle>
       ),
-      href: twitterLink,
+      href: instagramLink,
     },
     {
       name: "Facebook",
@@ -45,13 +45,13 @@ function ProfileSocialInfo({ profile }) {
       href: facebookLink,
     },
     {
-      name: "Instagram",
-      icon: (
-        <IconStyle color="#D7336D">
-          <InstagramIcon />
+      name: "Twitter",
+      icon: (-
+        <IconStyle color="#1877F2">
+          <TwitterIcon />
         </IconStyle>
       ),
-      href: instagramLink,
+      href: twitterLink,
     },
   ];
 

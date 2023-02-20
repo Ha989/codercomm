@@ -5,20 +5,24 @@ import EditIcon from '@mui/icons-material/Edit';
 import EditPostForm from "./EditPostForm";
 
 
+
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 300,
+
   bgcolor: 'background.paper',
   borderRadius: 1,
   p: 2,
 };
 
 function EditPost({ postId, handleDelete }) {
+
   const [openDelete, setOpenDelete] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+
+ 
   const handleDeleteOpen = () => {
     setOpenDelete(true);
   };
@@ -42,13 +46,12 @@ function EditPost({ postId, handleDelete }) {
         <EditIcon fontSize="small"/>
       </IconButton>
       <Modal
-            width={300}
             open={openEdit}
             onClose={handleEditClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <Box sx={style} textAlign="center">
+            <Box sx={style} width={{ xs: 300, md: 600 }} textAlign="center">
              <EditPostForm postId={postId} />
             </Box>
         </Modal>
@@ -56,13 +59,12 @@ function EditPost({ postId, handleDelete }) {
         <DeleteIcon fontSize="small"/>
       </IconButton>
          <Modal
-            width={300}
             open={openDelete}
             onClose={handleDeleteClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
-            <Box sx={style} textAlign="center">
+            <Box sx={style} width={300} textAlign="center">
             <Typography variant="h6">
               Do you want to delete this post?
             </Typography>

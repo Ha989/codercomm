@@ -1,12 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback} from 'react';
 import { FormProvider, FTextField, FUploadImage } from '../../components/form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { alpha, Box, Stack, Card} from '@mui/material';
+import { alpha, Box, Stack, Card, Typography, FormHelperText } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { editPost } from './postSlice';
 import { useDispatch, useSelector } from 'react-redux';
+
+
 
 
 
@@ -20,10 +22,13 @@ function EditPostForm({ postId }) {
     
     const dispatch = useDispatch();
     const {isLoading} = useSelector((state) => state.post);
+    const post = useSelector((state) => state.post.postsById[postId]);
+   
     const defaultValues = {
-      content: "",
-      image: "",
-    } 
+      content: post.content || "",
+      image: post.image || "",
+    };
+
 
     const methods = useForm({
         resolver: yupResolver(yupSchema),
@@ -31,15 +36,14 @@ function EditPostForm({ postId }) {
       });
       const {
         handleSubmit,
-        reset,
         setValue,
         formState: { isSubmitting },
       } = methods;
   
       const onSubmit = (data) => {
-        dispatch(editPost({ postId: postId, ...data })).then(() => reset());
+        dispatch(editPost({ postId: postId, ...data }));
       };
-
+      
       const handleDrop = useCallback(
         (acceptedFiles) => {
           const file = acceptedFiles[0];
@@ -67,7 +71,7 @@ function EditPostForm({ postId }) {
             multiline
             fullWidth
             rows={4}
-            placeholder="Edit content"
+            placeholder={post.content}
             sx={{
               "& fieldset": {
                 borderWidth: `1px !important`,
@@ -75,12 +79,19 @@ function EditPostForm({ postId }) {
               },
             }}
             />
+
              <FUploadImage
             name="image"
             accept="image/*"
             maxSize={3145728}
             onDrop={handleDrop}
-          />
+            helperText={
+                <FormHelperText info sx={{ px: 2 }}>
+                  Drop or select image to change
+                </FormHelperText>
+            }
+          /> 
+ 
             <Box
             sx={{
               display: "flex",
