@@ -9,11 +9,11 @@ import {
   Container,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { getFriendRequests } from "./friendSlice";
+import { getInFriendRequests } from "./friendSlice";
 import UserCard from "./UserCard";
 import SearchInput from "../../components/SearchInput";
 
-function FriendRequest() {
+function InComingFriendRequests() {
   const [filterName, setFilterName] = useState("");
   const [page, setPage] = React.useState(1);
 
@@ -28,13 +28,13 @@ function FriendRequest() {
   };
 
   useEffect(() => {
-    dispatch(getFriendRequests({ filterName, page }));
+    dispatch(getInFriendRequests({ filterName, page }));
   }, [filterName, page, dispatch]);
 
   return (
     <Container>
-      <Typography variant="h4" sx={{ mb: 3 }}>
-        Friend Requests
+      <Typography color="#F39422" variant="h5" sx={{ mb: 3 }}>
+        Friend requests received
       </Typography>
       <Card sx={{ p: 3 }}>
         <Stack spacing={2}>
@@ -74,4 +74,4 @@ function FriendRequest() {
   );
 }
 
-export default FriendRequest;
+export default InComingFriendRequests;

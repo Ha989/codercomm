@@ -3,7 +3,7 @@ import { FormProvider, FTextField, FUploadImage } from '../../components/form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { alpha, Box, Stack, Button, Card} from '@mui/material';
+import { alpha, Box, Stack, Card} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { editPost } from './postSlice';
 import { useDispatch, useSelector } from 'react-redux';

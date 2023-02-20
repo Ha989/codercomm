@@ -76,7 +76,7 @@ const slice = createSlice({
           state.totalUsers = count;
           state.totalPages = totalPages;
         },
-        getFriendRequestsSuccess(state, action) {
+        getInFriendRequestsSuccess(state, action) {
           state.isLoading = false;
           state.error = null;
     
@@ -85,9 +85,20 @@ const slice = createSlice({
           state.currentPageUsers = users.map((user) => user._id);
           state.totalUsers = count;
           state.totalPages = totalPages;
+          
         },
+        getOutFriendRequestsSuccess(state, action) {
+          state.isLoading = false;
+          state.error = null;
+    
+          const { users, count, totalPages } = action.payload;
+          users.forEach((user) => (state.usersById[user._id] = user));
+          state.currentPageUsers = users.map((user) => user._id);
+          state.totalUsers = count;
+          state.totalPages = totalPages;
       },
-    });
+    },
+  });
     
 
 export default slice.reducer;
@@ -208,7 +219,7 @@ export const getUsers = ({ filterName, page = 1, limit = 12 }) =>
   };
 
   
-export const getFriendRequests =
+export const getInFriendRequests =
 ({ filterName, page = 1, limit = 12 }) =>
 async (dispatch) => {
   dispatch(slice.actions.startLoading());
@@ -218,11 +229,26 @@ async (dispatch) => {
     const response = await apiService.get("/friends/requests/incoming", {
       params,
     });
-    dispatch(slice.actions.getFriendRequestsSuccess(response.data));
+    dispatch(slice.actions.getInFriendRequestsSuccess(response.data));
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
     toast.error(error.message);
   }
 };
+
+export const getOutFriendRequests = 
+({ filterName, page = 1, limit = 12 }) => 
+async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const params = { page, limit };
+    if (filterName) params.name = filterName;
+    const response = await apiService.get("/friends/requests/outgoing", { params });
+    dispatch(slice.actions.getOutFriendRequestsSuccess(response.data));
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+}
 
   

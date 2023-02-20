@@ -7,12 +7,12 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Profile from '../features/user/Profile';
 import FriendList from '../features/friend/FriendList';
-import FriendRequests from '../features/friend/FriendRequests';
 import AddFriend from '../features/friend/AddFriend';
 import { Box, Card, Container, Tab, Tabs } from '@mui/material';
 import { capitalCase } from 'change-case';
 import ProfileCover from '../features/user/ProfileCover';
 import {styled} from '@mui/material/styles'
+import RequestsPage from './RequestsPage';
 
 const TabWrapperStyle = styled("div")(({ theme }) => ({
   display: 'flex',
@@ -53,7 +53,7 @@ function HomePage() {
     {
       value: "requests",
       icon: <ContactMailIcon sx={{ fontSize: 24 }} />,
-      component: <FriendRequests />,
+      component: <RequestsPage />,
     },
     {
       value: "add_friend",
