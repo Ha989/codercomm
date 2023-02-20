@@ -2,9 +2,9 @@
 
 This project was bootstrapped with 
 [Create React App](https://github.com/facebook/create-react-app).
-[Redux]
-[Material UI]
-[Cloudinary]
+## Redux
+## Material UI
+## Cloudinary
 
 Demo App: 
 (https://63f3282399e7cf7fab29cd15--cheery-paprenjak-fba2b1.netlify.app/)
