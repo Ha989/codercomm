@@ -1,9 +1,10 @@
-import React, { useCallback} from 'react';
+import React, { useCallback, useState } from 'react';
 import { FormProvider, FTextField, FUploadImage } from '../../components/form';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { alpha, Box, Stack, Card, FormHelperText } from '@mui/material';
+import { alpha, Box, Stack, Card, FormHelperText, IconButton} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import { LoadingButton } from '@mui/lab';
 import { editPost } from './postSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,23 +17,24 @@ const yupSchema = Yup.object().shape({
     content: Yup.string().required("Content is required"),
   });
   
-
+  
 
 function EditPostForm({ postId }) {
     
     const dispatch = useDispatch();
     const {isLoading} = useSelector((state) => state.post);
-    const post = useSelector((state) => state.post.postsById[postId]);
-   
+    const content = useSelector((state) => state.post.postsById[postId].content);
+    const image = useSelector((state) => state.post.postsById[postId].image);
+    const [img, setImg] = useState(image);
+    
     const defaultValues = {
-      content: post.content || "",
-      image: post.image || "",
-    };
-
-
+      content: content,
+      image: image
+    }
+  
     const methods = useForm({
         resolver: yupResolver(yupSchema),
-        defaultValues,
+        defaultValues
       });
       const {
         handleSubmit,
@@ -60,6 +62,12 @@ function EditPostForm({ postId }) {
         [setValue]
       );
 
+      const handleRemove = () => {
+        setImg("")
+        dispatch(editPost({ postId: postId, content, ...img}));
+      }
+
+
   return (
     <>
         <Card sx={{ p: 3}}>
@@ -71,7 +79,7 @@ function EditPostForm({ postId }) {
             multiline
             fullWidth
             rows={4}
-            placeholder={post.content}
+            placeholder={content}
             sx={{
               "& fieldset": {
                 borderWidth: `1px !important`,
@@ -79,18 +87,25 @@ function EditPostForm({ postId }) {
               },
             }}
             />
-
+             <Box >
+              <IconButton 
+                onClick={handleRemove} 
+                position="absoblute"
+                sx={{ ml: 20, mb: -10, zIndex: 99 }}>
+                <ClearIcon />
+              </IconButton>
              <FUploadImage
             name="image"
             accept="image/*"
             maxSize={3145728}
             onDrop={handleDrop}
             helperText={
-                <FormHelperText info sx={{ px: 2 }}>
+                <FormHelperText sx={{ px: 2 }}>
                   Drop or select image to change
                 </FormHelperText>
             }
           /> 
+          </Box>
  
             <Box
             sx={{
